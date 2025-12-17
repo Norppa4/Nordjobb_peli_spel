@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<title>Nordjobb peli / spel</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+  background-image: url("taustakuva2.png");
+  background-size: 60% auto;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #222;
+  color: #fff;
+  text-align: center;
+  justify-content: flex-start;
+}
+
+
+  .menu, .questions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 0;
+    
+  }
+
+  .card {
+    background: #FFFFFF;
+    padding: 25px 45px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: #000000;
+    transition: transform 0.2s, background 0.2s;
+    margin: 5px;
+    font-family:  'Poppins';
+    border: 1px solid black;
+    border-radius: 3px;
+  }
+   .card2 {
+    background: #1D9984;
+    padding: 25px 45px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin: 5px;
+    font-family:  'Poppins';  
+    border: 1px solid black;
+    border-radius: 3px; 
+  }
+
+  .card:hover {
+    background: #666;
+    transform: scale(1.05);
+  }
+
+  .cardsContainer {
+  background-color: #1D9984; 
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 15px;
+  font-size: 15px;
+  min-width: 150px;     
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 3px;   
+  }
+
+  .questionTitle {
+    font-size: 20px;
+    margin-bottom: 15px;
+    background-color:#FFEB85; 
+    color: #000000;
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: inline-block;
+    font-family:  'Poppins';
+    border: 1px solid black;
+    border-radius: 3px; 
+  }
+
+#result {
+  display: flex;
+  flex-direction: column;   
+  align-items: center;      
+  justify-content: flex-start; 
+  gap: 10px;               
+  margin-top: 40px;
+  width: 100%;  
+  font-family:  'Poppins';             
+}
+
+#resultImage {
+  width: 300px;
+  max-width: 80%;
+   display: block;
+margin: 0 auto; 
+}
+
+#resultBox {
+  display: inline-block; 
+  background-color: #1D9984;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  max-width: 400px;
+  font-family:  'Poppins';   
+  border: 1px solid black;
+  border-radius: 3px;            
+}
+#resultBox2 {
+  display: inline-block;  
+  background-color: #FFEB85;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #000000;
+  text-align: center;
+  max-width: 400px; 
+  font-family:  'Poppins';
+  border: 1px solid black;
+  border-radius: 3px;       
+}
+#resultBox3 {
+  display: inline-block;    
+  background-color: #1D9984;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  max-width: 400px;      
+  font-family:  'Poppins';   
+}
+#resultText {
+  font-size: 20px;
+  line-height: 1.5;
+}
+#menuImage {
+ display: block;
+  margin: 100px auto 0; 
+  width: 250px;
+  max-width: 80%;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Kielivalikko -->
+<div class="menu" id="menu">
+  <img src="nordjobb2.png" alt="Nordjobb" id="menuImage">
+  <div id="resultBox2">Testaa, mikä nordjobbari olet</div>
+  <div class="card" data-language="suomi">Suomi</div>
+  <div id="resultBox2">Testa, vilken nordjobbare du är</div>
+  <div class="card" data-language="svenska">Svenska</div>
+   <div class="card2" data-language="info">Info</div>
+</div>
+
+<!-- Kierrokset -->
+<div class="questions" id="questions1" style="display:none;">
+  <div class="questionTitle"></div>
+  <div class="cardsContainer" id="questionCards1"></div>
+</div>
+
+<div class="questions" id="questions2" style="display:none;">
+  <div class="questionTitle"></div>
+  <div class="cardsContainer" id="questionCards2"></div>
+</div>
+
+<div class="questions" id="questions3" style="display:none;">
+  <div class="questionTitle"></div>
+  <div class="cardsContainer" id="questionCards3"></div>
+</div>
+
+<div class="questions" id="questions4" style="display:none;">
+  <div class="questionTitle"></div>
+  <div class="cardsContainer" id="questionCards4"></div>
+</div>
+
+<div class="questions" id="questions4" style="display:none;">
+  <div class="questionTitle"></div>
+  <div class="cardsContainer" id="questionCards4"></div>
+</div>
+
+<!-- Lopputulos -->
+<div id="result" style="display:none;">
+  <div id="resultBox">
+    <div id="resultText"></div>
+  </div>
+  <img id="resultImage" alt="Hahmo" />
+</div>
+<script>
+/* ---------- ASETUKSET ---------- */
+
+const totalRounds = 4;
+
+const characters = [
+  "hahmo1","hahmo2","hahmo3","hahmo4","hahmo5","hahmo6"
+];
+const characterNames = {
+  hahmo1: "Varasto / Logistiikka",
+  hahmo2: "Turismi / Hotelli",
+  hahmo3: "Hoiva-ala",
+  hahmo4: "Puutarha / Maatalous",
+  hahmo5: "Ravintola-ala",
+  hahmo6: "Siivous"
+};
+const questionsExplanation = {
+  hahmo1: "Olet ahkera ja fyysisesti aktiivinen, etkä kaihda haasteita tai vauhdikasta tekemistä.",
+  hahmo2: "Viihdyt erilaisten ihmisten seurassa ja uskallat heittäytyä uusiin tilanteisiin rohkeasti.",
+  hahmo3: "Olet empaattinen ja sosiaalisesti taitava, ja kohtaat yllättävätkin tilanteet rauhallisesti.",
+  hahmo4: "Olet valmis tekemään töitä luonnon ja elintärkeän ravinnon parissa sinnikkäästi ja käytännönläheisesti.",
+  hahmo5: "Toimit tehokkaasti myös kiireessä, etkä anna stressin horjuttaa keskittymistäsi.",
+  hahmo6: "Pidät tarkasta ja fyysisestä työstä, jossa kädenjälkesi näkyy ja lopputulos tuntuu palkitsevalta."
+};
+
+const scores = {};
+characters.forEach(h => scores[h] = 0);
+
+const displayQuestions = [
+  "Millainen on luonteesi?",
+  "Missä viihdyt parhaiten?",
+  "Jos olisit eläin, mikä olisit?",
+  "Minkälaisessa ympäristössä haluaisit työskennellä?"
+];
+
+const questionsData = [
+  ["Atleettinen","Sosiaalinen","Ihmisläheinen","Luonnonläheinen","Energinen","Puuhastelija"],
+  ["Viileässä","Kansainvälisessä ilmapiirissä","Tuttujen kanssa","Ulkona","Virkeässä ilmapiirissä","Sisätiloissa"],
+  ["Karhu","Pääskynen","Miekkavalas","Mehiläinen","Sopuli","Kettu"],
+  ["Omassa rauhassa","Kansainvälinen","Kaupungissa","Maalla","Hyväntuoksuinen","Ei väliä"]
+];
+
+const questionsLink = [
+  ["hahmo1","hahmo2","hahmo3","hahmo4","hahmo5","hahmo6"],
+  ["hahmo1","hahmo2","hahmo3","hahmo4","hahmo5","hahmo6"],
+  ["hahmo1","hahmo2","hahmo3","hahmo4","hahmo5","hahmo6"],
+  ["hahmo1","hahmo2","hahmo3","hahmo4","hahmo5","hahmo6"]
+];
+
+const displayQuestionsSV = [
+  "Hurdan är din personlighet?",
+  "Var trivs du bäst?",
+  "Om du var ett djur, vilket skulle du vara?",
+  "I vilken typ av miljö vill du arbeta?"
+];
+
+const questionsDataSV = [
+  ["Atletisk","Social","Människonära","Naturnära","Energisk","Händig"],
+  ["I svala miljöer","I internationell miljö","Med bekanta","Utomhus","I livlig miljö","Inomhus"],
+  ["Björn","Svala","Späckhuggare","Bi","Lemming","Räv"],
+  ["I lugn och ro","Internationellt","I staden","På landet","Väldoftande","Spelar ingen roll"]
+];
+
+const characterNamesSV = {
+  hahmo1: "Lager / Logistik",
+  hahmo2: "Turism / Hotell",
+  hahmo3: "Vårdbranschen",
+  hahmo4: "Trädgård / Jordbruk",
+  hahmo5: "Restaurangbranschen",
+  hahmo6: "Städning"
+};
+
+const questionsExplanationSV = {
+  hahmo1: "Du är flitig och fysiskt aktiv och räds inte utmaningar eller högt tempo.",
+  hahmo2: "Du trivs bland olika människor och vågar kasta dig in i nya situationer.",
+  hahmo3: "Du är empatisk och socialt skicklig samt hanterar överraskningar lugnt.",
+  hahmo4: "Du jobbar uthålligt och praktiskt med natur och livsviktig produktion.",
+  hahmo5: "Du arbetar effektivt även under stress och behåller fokus.",
+  hahmo6: "Du gillar noggrant och fysiskt arbete där resultatet syns tydligt."
+};
+
+
+const menu = document.getElementById("menu");
+let currentRound = 0;
+
+const rounds = [
+  { div: document.getElementById("questions1"), cards: document.getElementById("questionCards1") },
+  { div: document.getElementById("questions2"), cards: document.getElementById("questionCards2") },
+  { div: document.getElementById("questions3"), cards: document.getElementById("questionCards3") },
+  { div: document.getElementById("questions4"), cards: document.getElementById("questionCards4") }
+];
+
+// Kielivalinta
+menu.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", () => {
+    if(card.dataset.language === "suomi"){
+      currentLanguage = "suomi";
+      menu.style.display = "none";
+      currentRound = 0;
+      showQuestion();
+    } else if(card.dataset.language === "svenska"){
+      currentLanguage = "svenska";
+      menu.style.display = "none";
+      currentRound = 0;
+      showQuestion();
+    }
+  });
+});
+
+const infoBtn = document.querySelector('.card2');
+infoBtn.addEventListener('click', () => {
+  alert("Peli on tehty Nordjobbin lähettilään Nora Dahlbackan toimesta. Pelin tarkoitus on tuottaa hyvää mieltä.\n\nSpelet är gjort av Nordjobbs ambassadör Nora Dahlbacka. Spelet är gjort till att skapa gott humör.");
+});
+
+function showQuestion(){
+  rounds.forEach(r => r.div.style.display = "none");
+
+  const round = rounds[currentRound];
+  round.div.style.display = "flex";
+
+  const questions = currentLanguage === "suomi" ? displayQuestions : displayQuestionsSV;
+  const options = currentLanguage === "suomi" ? questionsData : questionsDataSV;
+
+  round.div.querySelector(".questionTitle").textContent = questions[currentRound];
+  round.cards.innerHTML = "";
+
+  options[currentRound].forEach((text, index) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.textContent = text;
+
+    card.addEventListener("click", () => {
+      const character = questionsLink[currentRound][index];
+      scores[character]++;
+      currentRound++;
+
+      if(currentRound < totalRounds){
+        showQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    round.cards.appendChild(card);
+  });
+}
+function showResult(){
+  rounds.forEach(r => r.div.style.display = "none");
+
+const maxScore = Math.max(...Object.values(scores));
+const topCharacters = Object.keys(scores).filter(
+  h => scores[h] === maxScore
+);
+const winner =topCharacters[Math.floor(Math.random() * topCharacters.length)];
+const resultText = document.getElementById("resultText");
+const resultImage = document.getElementById("resultImage");
+const resultDiv = document.getElementById("result");
+
+const names =
+  currentLanguage === "svenska" ? characterNamesSV : characterNames;
+
+const explanations =
+  currentLanguage === "svenska" ? questionsExplanationSV : questionsExplanation;
+resultText.innerHTML = `
+  <strong><u>${names[winner]}</u></strong><br><br>
+  ${explanations[winner]}
+`;
+resultImage.src = winner + ".png";
+resultDiv.style.display = "block";x
+}
+
+</script>
+</body>
+</html>
